@@ -19,16 +19,24 @@ class Task():
         self.action_repeat = 3
 
         self.state_size = self.action_repeat * 6
-        self.action_low = 0
-        self.action_high = 900
-        self.action_size = 4
+        self.action_low = 0 #default 0 
+        self.action_high = 900 #default 900
+        self.action_size = 4 #default 4
 
         # Goal
-        self.target_pos = target_pos if target_pos is not None else np.array([0., 0., 10.]) 
+        # self.target_pos = target_pos if target_pos is not None else np.array([0., 0., 10.])
+        if target_pos is not None:
+            self.target_pos = target_pos
+        else:
+            print("Using default target position")
+            self.target_pos =  np.array([0., 0., 10.]);
 
     def get_reward(self):
         """Uses current pose of sim to return reward."""
-        reward = 1.-.3*(abs(self.sim.pose[:3] - self.target_pos)).sum()
+        # default value
+        # reward = 1.-.3*(abs(self.sim.pose[:3] - self.target_pos)).sum()
+        # actual reward
+        reward = 1.-.003*(abs(self.sim.pose[:3] - self.target_pos)).sum()
         return reward
 
     def step(self, rotor_speeds):
